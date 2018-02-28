@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:15:47 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/02/28 13:57:04 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/02/28 16:19:59 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,39 @@ char	**get_args(char *line)
 {
 	char	**args;
 	char	**values;
+	char	*tmp;
+	char	*tmp2;
 
+	tmp = NULL;
+	tmp2 = NULL;
 	args = ft_strsplit(line, ' ');
 	values = ft_strsplit(args[1], '=');
-	values[0] ? args[0] = ft_strdup(values[0]) : 0;
-	values[1] ? args[1] = ft_strdup(values[1]): 0;
+	values[0] ? tmp = ft_strdup(values[0]) : 0;
+	values[1] ? tmp2 = ft_strdup(values[1]): 0;
 	ft_tabdel(&values);
-	args[0] = ft_strjoin(args[0], "=");
+	free(values);
+	free(args[0]);
+	free(args[1]);
+	args[1] = ft_strdup(tmp2);
+	args[0] = ft_strjoin(tmp, "=");
+	free(tmp);
+	free(tmp2);
 	return (args);
 }
 
 char	**new_env(char **cpy, char **args)
 {
 	int i;
+	char *tmp;
 
 	i = 0;
 	while (*(cpy + i))
 		i++;
 	cpy = (char **)ft_realloc(cpy, sizeof(char*) * (i + 2));
-	args[0] = ft_strjoin(args[0], args[1]);
+	tmp = ft_strdup(args[0]);
+	free(args[0]);
+	args[0] = ft_strjoin(tmp, args[1]);
+	free(tmp);
 	*(cpy + i) = ft_strdup(args[0]);
 	i++;
 	*(cpy + i) = NULL;
