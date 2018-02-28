@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:15:47 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/02/28 16:19:59 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/02/28 17:03:50 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,11 @@ void	ft_setenv(char ***cpy, char *line)
 		if (args[2] && ft_strcmp(args[2], "1") == 0)
 			set_var(cpy, args[0], args[1]);
 		else
+		{
+			ft_tabdel(&args);
+			free(args);
 			return ;
+		}
 	}
 	else
 		*cpy = new_env(*cpy, args);

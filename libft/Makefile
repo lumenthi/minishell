@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 10:37:11 by lumenthi          #+#    #+#              #
-#    Updated: 2018/02/21 16:05:59 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/02/28 17:08:40 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,9 @@ FLAGS = -Werror -Wall -Wextra
 
 NAME = libft.a
 
-BLACK = '\033[4;30m'
 GREEN = '\033[4;32m'
 YELLOW = '\033[4;33m'
-BLUE = '\033[4;34m'
-MAGENTA = '\033[4;35m'
 BLANK = '\033[0m'
-CYAN = '\033[4;36m'
 RED = '\033[4;31m'
 
 INCLUDES = libft.h
@@ -100,8 +96,8 @@ OBJDIR = objs
 OBJS = $(addprefix $(OBJDIR)/, $(patsubst %.c, %.o,$(SRCS)))
 INCS = $(addprefix -I, $(INCLUDES))
 
-TICK = '\033[1;32m\xE2\x9C\x93\033[0m'
-CROSS = '\033[1;31m\xCB\x9F\033[0m'
+TICK = '\033[1;32m~\033[0m'
+CROSS = '\033[1;31mx\033[0m'
 
 .PHONY: all clean fclean re
 

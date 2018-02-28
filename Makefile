@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/02/28 14:14:00 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/02/28 17:07:42 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,17 +43,14 @@ vpath %.c srcs \
 	srcs/builtins/ft_env \
 	srcs/tools
 
-BLACK = '\033[4;30m'
 BLUE = '\033[4;34m'
 GREEN = '\033[4;32m'
 RED = '\033[4;31m'
-MAGENTA = '\033[4;35m'
 BLANK = '\033[0m'
-CYAN = '\033[4;36m'
 YELLOW = '\033[4;33m'
 
-TICK = '\033[1;32m\xE2\x9C\x93\033[0m'
-CROSS = '\033[1;31m\xCB\x9F\033[0m'
+TICK = '\033[1;32m~\033[0m'
+CROSS = '\033[1;31mx\033[0m'
 
 .PHONY : all clean fclean re debug
 
