@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 16:39:55 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 11:59:10 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/01 15:32:17 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,18 @@
 
 static void	cd_error(char *path)
 {
-	ft_putstr("cd: no such file or directory: ");
-	ft_putendl(path);
+	ft_putstr(RED);
+	ft_putstr("cd");
+	ft_putstr(BLANK);
+	if (ft_strcmp(path, "$HOME") == 0)
+		ft_putendl(": no $HOME variable");
+	if (ft_strcmp(path, "$OLDPWD") == 0)
+		ft_putendl(": no $OLDPWD variable");
+	else
+	{
+		ft_putstr(": no such file or directory: ");
+		ft_putendl(path);
+	}
 }
 
 void		ft_cd(char ***environ, char *args)
@@ -25,16 +35,21 @@ void		ft_cd(char ***environ, char *args)
 	char	**arg;
 
 	arg = ft_strsplit(args, ' ');
-	old_path = ft_strdup(get_var(*environ, "OLDPWD="));
+	if (get_var(*environ, "OLDPWD=") == NULL)
+		old_path = ft_strdup("");
+	else
+		old_path = ft_strdup(get_var(*environ, "OLDPWD="));
 	abs_path = NULL;
 	abs_path = getcwd(abs_path, 99);
-	set_var(environ, "OLDPWD=", abs_path);
-	if (arg[1] && ft_strcmp(arg[1], "-") == 0)
+	if (tab_size(arg) > 2)
+		ft_print_error("cd", ARGS, NULL);
+	else if (arg[1] && ft_strcmp(arg[1], "-") == 0)
 	{
 		if (chdir(old_path) == -1)
-			cd_error(old_path);
+			cd_error("$OLDPWD");
 		else
 		{
+			set_var(environ, "OLDPWD=", abs_path);
 			abs_path = getcwd(abs_path, 99);
 			set_var(environ, "PWD=", abs_path);
 			ft_putendl(abs_path);
@@ -44,9 +59,10 @@ void		ft_cd(char ***environ, char *args)
 		ft_strcmp(arg[1], "--") == 0)
 	{
 		if (chdir(get_var(*environ, "HOME=")) == -1)
-			args[1] ? cd_error(arg[1]) : cd_error("$HOME");
+			cd_error("$HOME");
 		else
 		{
+			set_var(environ, "OLDPWD=", abs_path);
 			abs_path = getcwd(abs_path, 99);
 			set_var(environ, "PWD=", abs_path);
 		}
@@ -57,6 +73,7 @@ void		ft_cd(char ***environ, char *args)
 			cd_error(arg[1]);
 		else
 		{
+			set_var(environ, "OLDPWD=", abs_path);
 			abs_path = getcwd(abs_path, 99);
 			set_var(environ, "PWD=", abs_path);
 		}
@@ -67,6 +84,7 @@ void		ft_cd(char ***environ, char *args)
 			cd_error(arg[1]);
 		else
 		{
+			set_var(environ, "OLDPWD=", abs_path);
 			abs_path = getcwd(abs_path, 99);
 			set_var(environ, "PWD=", abs_path);
 		}

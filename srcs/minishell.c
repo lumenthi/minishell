@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 12:07:58 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/01 17:26:37 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,15 @@ void	print_prompt(char **cpy)
 	char *path;
 	char *tmp;
 
+	tmp = NULL;
+	path = NULL;
 	tmp = get_var(cpy, "PWD=");
-	path = ft_strrchr(tmp, '/');
-	ft_strlen(path) > 1 ? path = path + 1 : 0;
+	if (tmp)
+	{
+		path = ft_strrchr(tmp, '/');
+		ft_strlen(path) > 1 ? path = path + 1 : 0;
+		!path ? path = tmp : 0;
+	}
 	ft_putstr(BLUE);
 	ft_putstr("[42minishell]");
 	ft_putstr(BLANK);
