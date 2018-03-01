@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:20:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 15:01:56 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:00:28 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ void	ft_print_error(char *ft, int error, char *arg)
 		ft_putstr(ft);
 		ft_putstr(BLANK);
 		ft_putstr(": ");
-		ft_putstr(RED);
 		ft_putstr(arg);
-		ft_putstr(BLANK);
 		ft_putendl(" no such a variable");
 	}
 }
