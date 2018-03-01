@@ -6,36 +6,88 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/02/28 14:12:48 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/01 23:23:48 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_execve(char *args, char **env)
+char	*make_string(char *fullpath)
+{
+	char *tmp;
+	char *str;
+
+	if (!fullpath)
+		return (NULL);
+	str = ft_strdup(fullpath);
+	tmp = ft_strchr(str, ':');
+	if (!tmp)
+	{
+		free(str);
+		return (NULL);
+	}
+	*(tmp) = '\0';
+	return (str);
+}
+
+int		do_execve(char **arg, char **env)
 {
 	pid_t pid = new_process();
-	char	**arg;
 	char	*cmd;
+	char	*path;
+	int		status;
 
-	arg = ft_strsplit(args, ' ');
-	if (ft_strncmp(args, "/usr/bin/", 9) == 0)
-		cmd = arg[0] + 4;
+	path = get_var(env, "PATH=");
+	path = ft_strjoin(path, "/");
+	if (arg[0][0] != '/')
+		cmd = ft_strjoin(path, arg[0]);
 	else
-		cmd = ft_strjoin("/bin/", arg[0]);
+		cmd = ft_strdup(arg[0]);
 	if (pid == -1)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 	{
 		execve(cmd, arg, env);
-		print_error(arg[0]);
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		wait(NULL);
-		ft_tabdel(&arg);
-		free(arg);
+		waitpid(-1, &status, WIFEXITED(status));
+		free(path);
 		free(cmd);
+		return (status);
 	}
+}
+
+void	ft_execve(char *args, char **env)
+{
+	char *fullpath;
+	char *path;
+	char *BU;
+	char **arg;
+	char *old;
+
+	arg = ft_strsplit(args, ' ');
+	fullpath = ft_strdup(get_var(env, "PATH="));
+	BU = ft_strdup(fullpath);
+	while ((path = make_string(fullpath)))
+	{
+		set_var(&env, "PATH=", path);
+		free(path);
+		if (!do_execve(arg, env))
+			break ;
+		old = ft_strdup(fullpath);
+		free(fullpath);
+		fullpath = ft_strdup(ft_strchr(old, ':'));
+		free(old);
+		free(fullpath);
+		fullpath = ft_strdup(fullpath + 1);
+	}
+	free(fullpath);
+	if (!path)
+		print_error(arg[0]);
+	set_var(&env, "PATH=", BU);
+	ft_tabdel(&arg);
+	free(arg);
+	free(BU);
 }
