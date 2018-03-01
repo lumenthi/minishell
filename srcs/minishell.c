@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/02/28 14:13:11 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/01 12:07:58 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,38 @@ void	environ_cpy(char **environ, char ***cpy)
 	*(*cpy + i) = NULL;
 }
 
+void	print_prompt(char **cpy)
+{
+	char *path;
+	char *tmp;
+
+	tmp = get_var(cpy, "PWD=");
+	path = ft_strrchr(tmp, '/');
+	ft_strlen(path) > 1 ? path = path + 1 : 0;
+	ft_putstr(BLUE);
+	ft_putstr("[42minishell]");
+	ft_putstr(BLANK);
+	ft_putstr(GREEN);
+	path ? ft_putstr(path) : 0;
+	ft_putstr("$ ");
+	ft_putstr(BLANK);
+}
+
 int		main(void)
 {
 	extern char **environ;
 	char	buf;
 	int		ret;
 	char	**cpy;
-	char	*user;
 	int		i = 0;
 	char	*line = NULL;
 
 	environ_cpy(environ, &cpy);
 	while (1)
 	{
-		user = get_var(cpy, "USER=");
+		print_prompt(cpy);
 		i = 0;
 		buf = 0;
-		ft_putstr(BLUE);
-		ft_putstr("[42minishell]");
-		ft_putstr(BLANK);
-		ft_putstr(GREEN);
-		user ? ft_putstr(user) : 0;
-		ft_putstr("$ ");
-		ft_putstr(BLANK);
 		while ((ret = read(0, &buf, 1)) && buf != '\n' && buf != '\0')
 		{
 			line = (char*)ft_realloc(line, i + 2);
@@ -74,6 +83,8 @@ int		main(void)
 			*(line + i) = '\0';
 			if (ft_strcmp(line, "exit") == 0 || ft_strcmp(line, "q") == 0)
 				break ;
+			else if (ft_strncmp(line, "echo", 4) == 0)
+				ft_echo(line, cpy);
 			else if (ft_strncmp(line, "cd", 2) == 0)
 				ft_cd(&cpy, line);
 			else if (ft_strncmp(line, "setenv", 6) == 0)

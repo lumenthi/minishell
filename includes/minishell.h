@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/02/28 14:09:46 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/02/28 19:31:51 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void	ft_setenv(char ***cpy, char *line);
 void	environ_cpy(char **environ, char ***cpy);
 void	ft_env(char **environ);
 void	ft_execve(char *args, char **env);
+void	ft_echo(char *line, char **cpy);
 
 #endif

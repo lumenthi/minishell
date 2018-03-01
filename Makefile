@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/02/28 17:07:42 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/02/28 19:00:23 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ LIBFT = $(LIBDIR)/libft.a
 LIBFT_OBJ = $(LIBDIR)/objs
 
 SRCS = minishell.c \
+		ft_echo.c \
 		ft_cd.c \
 		ft_env.c \
 		ft_setenv.c \
@@ -37,6 +38,7 @@ INCLUDES = $(addprefix -I, $(INCDIR))
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
 vpath %.c srcs \
+	srcs/builtins/ft_echo \
 	srcs/builtins/ft_cd \
 	srcs/builtins/ft_setenv \
 	srcs/builtins/ft_unsetenv \
