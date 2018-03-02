@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/03/01 21:59:07 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/03/02 11:05:35 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,6 @@ vpath %.c srcs \
 	srcs/builtins/ft_env \
 	srcs/tools
 
-BLUE = '\033[4;34m'
 GREEN = '\033[4;32m'
 RED = '\033[4;31m'
 BLANK = '\033[0m'
@@ -54,7 +53,7 @@ YELLOW = '\033[4;33m'
 TICK = '\033[1;32m~\033[0m'
 CROSS = '\033[1;31mx\033[0m'
 
-.PHONY : all clean fclean re debug
+.PHONY : all clean fclean re
 
 all: $(NAME)
 
@@ -64,7 +63,7 @@ $(NAME): $(OBJS) $(LIBFT)
 
 $(OBJDIR)/%.o: %.c
 	@ mkdir -p $(OBJDIR)
-	@ $(CC) -c $(FLAGS) -g $(INCLUDES) -o $@ $<
+	@ $(CC) -c $(FLAGS) $(INCLUDES) -o $@ $<
 
 $(LIBFT): $(LIBFT_OBJ)
 	@ make -sC $(LIBDIR)
@@ -94,11 +93,5 @@ fclean: clean
 	printf "Removed %b%b%b executable\n" $(RED) $(NAME) $(BLANK) \
 	|| (printf " %b | " $(CROSS) && \
 	printf "No %b%b%b executable\n" $(RED) $(NAME) $(BLANK))
-
-debug: fclean $(OBJS)
-	@ make -s -C $(LIBDIR)
-	@ $(CC) $(LIBFT) -g -ggdb3 -o $(NAME) $(OBJS)
-	@ printf " %b | " $(TICK) && \
-	printf "Compiled debug version of: %b%b%b\n" $(BLUE) $(NAME) $(BLANK)
 
 re: fclean all

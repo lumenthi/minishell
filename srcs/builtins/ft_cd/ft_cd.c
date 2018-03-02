@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 16:39:55 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 15:32:17 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/02 10:55:14 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	cd_error(char *path)
 	ft_putstr(BLANK);
 	if (ft_strcmp(path, "$HOME") == 0)
 		ft_putendl(": no $HOME variable");
-	if (ft_strcmp(path, "$OLDPWD") == 0)
+	else if (ft_strcmp(path, "$OLDPWD") == 0)
 		ft_putendl(": no $OLDPWD variable");
 	else
 	{

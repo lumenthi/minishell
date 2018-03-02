@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 19:00:43 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 18:02:07 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/02 10:58:40 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	ft_echo(char *line, char **cpy)
 	args = ft_strsplit(line, ' ');
 	while (args[i])
 	{
-		if (args[i][0] == '$')
+		if (ft_strcmp(args[i], "~") == 0)
+			get_var(cpy, "HOME=") ? ft_putstr(get_var(cpy, "HOME=")) : f++;
+		else if (args[i][0] == '$')
 		{
 			var = ft_strjoin(args[i] + 1, "=");
 			get_var(cpy, var) ? ft_putstr(get_var(cpy, var)) : f++;
