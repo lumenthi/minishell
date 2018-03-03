@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/02 10:40:09 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/02 15:50:52 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		do_execve(char **arg, char **env)
 	if (pid == 0)
 	{
 		execve(cmd, arg, env);
-		exit(EXIT_FAILURE);
+		exit(42);
 	}
 	else
 	{
@@ -66,6 +66,7 @@ void	ft_execve(char *args, char **env)
 	char *BU;
 	char **arg;
 	char *old;
+	int ret;
 
 	arg = ft_strsplit(args, ' ');
 	if (!get_var(env, "PATH="))
@@ -81,7 +82,7 @@ void	ft_execve(char *args, char **env)
 	{
 		set_var(&env, "PATH=", path);
 		free(path);
-		if (!do_execve(arg, env))
+		if ((!(ret = do_execve(arg, env))) || ret == 256)
 			break ;
 		old = ft_strdup(fullpath);
 		free(fullpath);
