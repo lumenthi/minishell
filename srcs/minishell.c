@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/02 10:51:50 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/03 11:28:47 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,40 @@ void	print_prompt(char **cpy)
 	ft_putstr(BLANK);
 }
 
+char	*gnl(void)
+{
+	char	*line;
+	char	buf;
+	int		i;
+
+	line = NULL;
+	i = 0;
+	buf = 0;
+	while ((read(0, &buf, 1)) && buf != '\n' && buf != '\0')
+	{
+		line = (char*)ft_realloc(line, i + 2);
+		*(line + i) = buf;
+		i++;
+	}
+	if (i && line)
+		*(line + i) = '\0';
+	return (line);
+}
+
 int		main(void)
 {
 	extern char **environ;
-	char	buf;
-	int		ret;
 	char	**cpy;
-	int		i = 0;
-	char	*line = NULL;
+	char	*line;
 
+	line = NULL;
 	environ_cpy(environ, &cpy);
 	while (1)
 	{
 		print_prompt(cpy);
-		i = 0;
-		buf = 0;
-		while ((ret = read(0, &buf, 1)) && buf != '\n' && buf != '\0')
+		line = gnl();
+		if (line)
 		{
-			line = (char*)ft_realloc(line, i + 2);
-			*(line + i) = buf;
-			i++;
-		}
-		if (i && line)
-		{
-			*(line + i) = '\0';
 			if (ft_strcmp(line, "exit") == 0 || ft_strcmp(line, "q") == 0)
 				break ;
 			else if (ft_strncmp(line, "echo", 4) == 0)
@@ -101,6 +111,7 @@ int		main(void)
 				ft_env(cpy);
 			else
 				ft_execve(line, cpy);
+			free(line);
 		}
 	}
 	ft_tabdel(&cpy);
