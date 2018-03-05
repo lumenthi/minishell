@@ -6,22 +6,20 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 19:00:43 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/02 10:58:40 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/05 14:00:49 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	ft_echo(char *line, char **cpy)
+void	ft_echo(char **args, char **cpy)
 {
-	char	**args;
 	int		i;
 	char	*var;
 	int		f;
 
 	i = 1;
 	f = 0;
-	args = ft_strsplit(line, ' ');
 	while (args[i])
 	{
 		if (ft_strcmp(args[i], "~") == 0)
@@ -40,7 +38,5 @@ void	ft_echo(char *line, char **cpy)
 		i++;
 	}
 	ft_putchar('\n');
-	ft_tabdel(&args);
-	free(args);
 	return ;
 }

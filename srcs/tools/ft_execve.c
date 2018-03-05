@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/03 11:33:41 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/05 14:24:00 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,16 @@ int		do_execve(char **arg, char **env)
 	}
 }
 
-void	ft_execve(char *args, char **env)
+void	ft_execve(char **arg, char **env)
 {
 	char *fullpath;
 	char *path;
 	char *BU;
-	char **arg;
 	char *old;
 	int ret;
 
-	arg = ft_strsplit(args, ' ');
 	if (tab_size(arg) == 0)
-	{
-		free(arg);
 		return ;
-	}
 	if (!get_var(env, "PATH="))
 	{
 		ft_print_error(arg[0], FOUND, "$PATH");
@@ -98,9 +93,7 @@ void	ft_execve(char *args, char **env)
 	}
 	free(fullpath);
 	if (!path)
-		print_error(arg[0]);
+		print_error(arg[0], FOUND);
 	set_var(&env, "PATH=", BU);
-	ft_tabdel(&arg);
-	free(arg);
 	free(BU);
 }
