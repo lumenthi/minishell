@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 10:57:23 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/06 11:09:38 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/07 16:23:36 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void	ft_unsetenv(char ***cpy, char **args)
 	if (tab_size(args) > 2 || tab_size(args) == 1)
 	{
 		ft_print_error("unsetenv", ARGS, NULL);
+		return ;
+	}
+	if (ft_strcmp(args[1], "*") == 0)
+	{
+		ft_tabdel(cpy);
 		return ;
 	}
 	while (*(*cpy + i))

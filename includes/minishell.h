@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/06 12:31:15 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/07 15:23:27 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include <dirent.h>
 
 enum {ARGS, FOUND, QUOTES};
+
+extern int	g_error;
 
 pid_t	new_process(void);
 void	ft_tabdel(char ***tab);

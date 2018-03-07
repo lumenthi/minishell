@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/06 14:28:08 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/07 15:35:09 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,17 @@ char	**get_a(char *line)
 	return (args);
 }
 
+int		g_error = 0;
+
+void	INThandler(int sig)
+{
+	if (sig == 2)
+		g_error = 1;
+	ft_putstr("\b ");
+	ft_putstr("\b\b ");
+	ft_putstr("\b");
+}
+
 int		main(void)
 {
 	extern char **environ;
@@ -212,6 +223,8 @@ int		main(void)
 	char	**args;
 
 	environ_cpy(environ, &cpy);
+	signal(SIGINT, INThandler);
+	g_error = 0;
 	while (1)
 	{
 		args = NULL;
