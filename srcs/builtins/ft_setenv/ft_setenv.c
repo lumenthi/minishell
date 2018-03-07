@@ -6,13 +6,13 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:15:47 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/06 11:04:31 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/07 12:02:41 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	set_var(char ***environ, char *var, char *value)
+void	rep_var(char ***environ, char *var, char *value)
 {
 	char	*str;
 	int		i;
@@ -60,6 +60,24 @@ char	**new_env(char **cpy, char **args)
 	return (cpy);
 }
 
+void	set_var(char ***cpy, char *var, char *value)
+{
+	char	**args;
+
+	args = malloc(sizeof(char *) * 4);
+	args[0] = ft_strdup("setenv");
+	args[1] = ft_strdup(var);
+	args[1][ft_strlen(args[1]) - 1] = '\0';
+	args[2] = ft_strdup(value);
+	args[3] = NULL;
+	if (get_var(*cpy, var) != NULL)
+		rep_var(cpy, var, value);
+	else
+		*cpy = new_env(*cpy, args);
+	ft_tabdel(&args);
+	free(args);
+}
+
 void	ft_setenv(char ***cpy, char **args)
 {
 	char	*tmp;
@@ -70,7 +88,7 @@ void	ft_setenv(char ***cpy, char **args)
 		return ;
 	}
 	else if (get_var(*cpy, tmp = ft_strjoin(args[1], "=")) != NULL)
-		set_var(cpy, tmp, args[2]);
+		rep_var(cpy, tmp, args[2]);
 	else
 		*cpy = new_env(*cpy, args);
 	free(tmp);

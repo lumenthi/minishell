@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 16:39:55 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/06 12:39:54 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/07 12:10:17 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ void		ft_cd(char ***environ, char **arg)
 	else if (arg[1] == NULL || ft_strcmp(arg[1], "~") == 0 ||
 		ft_strcmp(arg[1], "--") == 0)
 	{
-		if (chdir(get_var(*environ, "HOME=")) == -1)
-			cd_error("$HOME");
+		if (!get_var(*environ, "HOME="))
+			ft_print_error("cd", FOUND, "$HOME");
+		else if (chdir(get_var(*environ, "HOME=")) == -1)
+			cd_error(get_var(*environ, "HOME="));
 		else
 		{
 			set_var(environ, "OLDPWD=", abs_path);
