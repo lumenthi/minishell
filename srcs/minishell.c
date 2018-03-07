@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/05 14:24:52 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/06 14:28:08 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,18 @@ int		quote_invalid(char *line)
 	return (c % 2 ? 1 : 0);
 }
 
+void	print_tab(char **args)
+{
+	int i = 0;
+	ft_putendl("___________");
+	while (args[i] != NULL)
+	{
+		printf("args[%d]: '%s'\n", i, args[i]);
+		i++;
+	}
+	ft_putendl("___________");
+}
+
 char	**get_a(char *line)
 {
 	char	**args;
@@ -145,10 +157,9 @@ char	**get_a(char *line)
 					if (w == 0)
 					{
 						args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
-						args[i] = malloc(0);
+						args[i] = malloc(lim);
 	//					printf("create args[%d]\n", i);
 					}
-					args[i] = (char *)ft_realloc(args[i], sizeof(char) * (j + 1));
 					args[i][j] = line[c];
 	//				printf("create args[%d][%d]: %c\n", i, j, args[i][j]);
 					j++;
@@ -165,10 +176,10 @@ char	**get_a(char *line)
 				if (w == 0)
 				{
 					args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
-					args[i] = malloc(0);
+					args[i] = malloc(lim);
 //					printf("create args[%d]\n", i);
 				}
-				args[i] = (char *)ft_realloc(args[i], sizeof(char) * (j + 1));
+//				args[i] = (char *)ft_realloc(args[i], sizeof(char) * (j + 1));
 				args[i][j] = line[c];
 //				printf("create args[%d][%d]: %c\n", i, j, args[i][j]);
 				j++;
@@ -177,27 +188,20 @@ char	**get_a(char *line)
 //				ft_putnbr(c);
 			}
 		}
-		w ? args[i][j] = '\0' : 1;
+		if (w != 0)
+		{
+			args[i][j] = '\0';
+			i++;
+		}
 //		ft_putendl(args[i]);
-		w ? i++ : 1;
+//		w ? i++ : 1;
 		j = 0;
 		w = 0;
 		c++;
 	}
-	args = (char **)ft_realloc(args, sizeof(char *) * i + 1);
+	args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
 	args[i] = NULL;
 	return (args);
-}
-
-void	print_tab(char **args)
-{
-	int i = 0;
-	while (args[i] != NULL)
-	{
-		printf("args[%d]: '%s'\n", i, args[i]);
-		i++;
-	}
-	ft_putendl("___________");
 }
 
 int		main(void)
@@ -207,17 +211,17 @@ int		main(void)
 	char	*line;
 	char	**args;
 
-	line = NULL;
 	environ_cpy(environ, &cpy);
-	args = NULL;
 	while (1)
 	{
+		args = NULL;
+		line = NULL;
 		print_prompt(cpy);
 		line = gnl();
-		args = get_a(line);
-//		print_tab(args);
 		if (line)
 		{
+			args = get_a(line);
+//			print_tab(args);
 			if (!args)
 				print_error(line, QUOTES);
 			else if (ft_strcmp(line, "exit") == 0 || ft_strcmp(line, "q") == 0)
@@ -225,11 +229,11 @@ int		main(void)
 			else if (ft_strncmp(line, "echo", 4) == 0)
 				ft_echo(args, cpy);
 			else if (ft_strncmp(line, "cd", 2) == 0)
-				ft_cd(&cpy, line);
+				ft_cd(&cpy, args);
 			else if (ft_strncmp(line, "setenv", 6) == 0)
-				ft_setenv(&cpy, line);
+				ft_setenv(&cpy, args);
 			else if (ft_strncmp(line, "unsetenv", 8) == 0)
-				ft_unsetenv(&cpy, line);
+				ft_unsetenv(&cpy, args);
 			else if (ft_strcmp(line, "env") == 0)
 				ft_env(cpy);
 			else

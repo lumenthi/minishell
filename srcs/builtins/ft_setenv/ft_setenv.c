@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:15:47 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 17:23:14 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/06 11:04:31 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,90 +38,40 @@ void	set_var(char ***environ, char *var, char *value)
 	free(value);
 }
 
-char	**get_args(char *line)
-{
-	char	**args;
-	char	**values;
-	char	*tmp;
-	char	*tmp2;
-
-	tmp = NULL;
-	tmp2 = NULL;
-	if (!ft_strchr(line, '='))
-	{
-		ft_print_error("setenv", ARGS, NULL);
-		return (NULL);
-	}
-	args = ft_strsplit(line, ' ');
-	if (tab_size(args) != 3)
-	{
-		ft_tabdel(&args);
-		free(args);
-		ft_print_error("setenv", ARGS, NULL);
-		return (NULL);
-	}
-	values = ft_strsplit(args[1], '=');
-	if (tab_size(values) < 2)
-	{
-		ft_print_error("setenv", ARGS, NULL);
-		ft_tabdel(&values);
-		ft_tabdel(&args);
-		free(values);
-		free(args);
-		return (NULL);
-	}
-	values[0] ? tmp = ft_strdup(values[0]) : 0;
-	values[1] ? tmp2 = ft_strdup(values[1]): 0;
-	ft_tabdel(&values);
-	free(values);
-	free(args[0]);
-	free(args[1]);
-	args[1] = ft_strdup(tmp2);
-	args[0] = ft_strjoin(tmp, "=");
-	free(tmp);
-	free(tmp2);
-	return (args);
-}
-
 char	**new_env(char **cpy, char **args)
 {
 	int		i;
 	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
 	while (*(cpy + i))
 		i++;
 	cpy = (char **)ft_realloc(cpy, sizeof(char*) * (i + 2));
-	tmp = ft_strdup(args[0]);
-	free(args[0]);
-	args[0] = ft_strjoin(tmp, args[1]);
+	tmp = ft_strdup(args[1]);
+	tmp2 = ft_strjoin(tmp, "=");
 	free(tmp);
-	*(cpy + i) = ft_strdup(args[0]);
+	free(args[1]);
+	args[1] = ft_strjoin(tmp2, args[2]);
+	free(tmp2);
+	*(cpy + i) = ft_strdup(args[1]);
 	i++;
 	*(cpy + i) = NULL;
 	return (cpy);
 }
 
-void	ft_setenv(char ***cpy, char *line)
+void	ft_setenv(char ***cpy, char **args)
 {
-	char	**args;
+	char	*tmp;
 
-	args = get_args(line);
-	if (args == NULL)
-		return ;
-	if (get_var(*cpy, args[0]) != NULL)
+	if (args == NULL || tab_size(args) != 3)
 	{
-		if (args[2] && ft_strcmp(args[2], "1") == 0)
-			set_var(cpy, args[0], args[1]);
-		else
-		{
-			ft_tabdel(&args);
-			free(args);
-			return ;
-		}
+		ft_print_error("setenv", ARGS, NULL);
+		return ;
 	}
+	else if (get_var(*cpy, tmp = ft_strjoin(args[1], "=")) != NULL)
+		set_var(cpy, tmp, args[2]);
 	else
 		*cpy = new_env(*cpy, args);
-	ft_tabdel(&args);
-	free(args);
+	free(tmp);
 }

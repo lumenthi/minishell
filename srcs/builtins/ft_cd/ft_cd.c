@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 16:39:55 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/02 10:55:14 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/06 12:39:54 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,28 @@ static void	cd_error(char *path)
 	}
 }
 
-void		ft_cd(char ***environ, char *args)
+char		*var_conv(char *arg, char **env)
+{
+	char	*str;
+	char	*tmp;
+	char	*ret;
+
+	str = ft_strdup(arg + 1);
+	tmp = ft_strjoin(str, "=");
+	free(str);
+	str = ft_strdup(tmp);
+	free(tmp);
+	ret = get_var(env, str);
+	free(str);
+	return (ret);
+}
+
+void		ft_cd(char ***environ, char **arg)
 {
 	char	*abs_path;
 	char	*old_path;
-	char	**arg;
+	char	*tmp;
 
-	arg = ft_strsplit(args, ' ');
 	if (get_var(*environ, "OLDPWD=") == NULL)
 		old_path = ft_strdup("");
 	else
@@ -43,6 +58,19 @@ void		ft_cd(char ***environ, char *args)
 	abs_path = getcwd(abs_path, 99);
 	if (tab_size(arg) > 2)
 		ft_print_error("cd", ARGS, NULL);
+	else if (arg[1] != NULL && arg[1][0] == '$')
+	{
+		if (!(tmp = var_conv(arg[1], *environ)))
+			ft_print_error("cd", FOUND, arg[1]);
+		else if (chdir(tmp) == -1)
+			cd_error(tmp);
+		else
+		{
+			set_var(environ, "OLDPWD=", abs_path);
+			abs_path = getcwd(abs_path, 99);
+			set_var(environ, "PWD=", abs_path);
+		}
+	}
 	else if (arg[1] && ft_strcmp(arg[1], "-") == 0)
 	{
 		if (chdir(old_path) == -1)
@@ -91,6 +119,4 @@ void		ft_cd(char ***environ, char *args)
 	}
 	free(abs_path);
 	free(old_path);
-	ft_tabdel(&arg);
-	free(arg);
 }

@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/05 14:23:20 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/06 12:31:15 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,16 @@ void	ft_tabdel(char ***tab);
 void	print_error(char *args, int error);
 char	*get_var(char **environ, char *var);
 void	set_var(char ***environ, char *var, char *value);
-void	ft_cd(char ***environ, char *args);
+void	ft_cd(char ***environ, char **arg);
 void	print_env(char **environ);
-void	ft_unsetenv(char ***cpy, char *line);
-void	ft_setenv(char ***cpy, char *line);
+void	ft_unsetenv(char ***cpy, char **args);
+void	ft_setenv(char ***cpy, char **args);
 void	environ_cpy(char **environ, char ***cpy);
 void	ft_env(char **environ);
 void	ft_execve(char **arg, char **env);
 void	ft_echo(char **tabs, char **cpy);
 int		tab_size(char **tab);
 void	ft_print_error(char *ft, int error, char *arg);
+char	*var_conv(char *arg, char **env);
 
 #endif

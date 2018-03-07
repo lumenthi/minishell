@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/05 14:24:00 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/06 13:53:04 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,23 @@ int		do_execve(char **arg, char **env)
 	}
 }
 
+char	**tab_conv(char **args, char **env)
+{
+	int		i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (args[i][0] == '$' && var_conv(args[i], env))
+		{
+			free(args[i]);
+			args[i] = ft_strdup(var_conv(args[i], env));
+		}
+		i++;
+	}
+	return (args);
+}
+
 void	ft_execve(char **arg, char **env)
 {
 	char *fullpath;
@@ -69,11 +86,10 @@ void	ft_execve(char **arg, char **env)
 
 	if (tab_size(arg) == 0)
 		return ;
+	arg = tab_conv(arg, env);
 	if (!get_var(env, "PATH="))
 	{
 		ft_print_error(arg[0], FOUND, "$PATH");
-		ft_tabdel(&arg);
-		free(arg);
 		return ;
 	}
 	fullpath = ft_strdup(get_var(env, "PATH="));

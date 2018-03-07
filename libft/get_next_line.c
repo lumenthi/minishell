@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 11:54:10 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/01/04 11:38:42 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/01/12 11:43:34 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static int		gnl_read(int const fd, char **file)
 
 int				get_next_line(int const fd, char **line)
 {
-	static char	*file[MAX_FD];
+	static char	*file[MAX_FD + 1];
 
-	if (!(line) || fd < 0 || BUFF_SIZE < 1)
+	if (!(line) || fd < 0 || BUFF_SIZE < 1 || fd > MAX_FD)
 		return (-1);
 	*line = NULL;
 	if (!(file[fd]))
@@ -74,7 +74,12 @@ int				get_next_line(int const fd, char **line)
 	}
 	else
 	{
-		if (!gnl_strcut(&file[fd]))
+		if (ft_strcmp(file[fd], "") == 0)
+		{
+			if (!(gnl_read(fd, &file[fd])))
+				return (-1);
+		}
+		else if (!gnl_strcut(&file[fd]))
 			return (0);
 	}
 	if (!(*line = ft_strdup(file[fd])))

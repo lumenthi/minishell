@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 10:57:23 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/01 17:10:27 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/06 11:09:38 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,17 @@ char	*env_get(char *cpy)
 	return (env);
 }
 
-void	ft_unsetenv(char ***cpy, char *line)
+void	ft_unsetenv(char ***cpy, char **args)
 {
-	char	**args;
 	int		i;
 	char	*tmp;
 	int		found;
 
 	found = 0;
 	i = 0;
-	args = ft_strsplit(line, ' ');
 	if (tab_size(args) > 2 || tab_size(args) == 1)
 	{
 		ft_print_error("unsetenv", ARGS, NULL);
-		if (args)
-		{
-			ft_tabdel(&args);
-			free(args);
-		}
 		return ;
 	}
 	while (*(*cpy + i))
@@ -62,6 +55,4 @@ void	ft_unsetenv(char ***cpy, char *line)
 		i++;
 	}
 	found ? 0 : ft_print_error("unsetenv", FOUND, args[1]);
-	ft_tabdel(&args);
-	free(args);
 }
