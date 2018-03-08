@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:20:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/02 15:55:32 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 10:03:10 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ int		tab_size(char **tab)
 
 void	ft_print_error(char *ft, int error, char *arg)
 {
+	if (error == EMPTY)
+	{
+		ft_putstr(RED);
+		ft_putstr(ft);
+		ft_putstr(BLANK);
+		ft_putstr(": ");
+		ft_putendl("no more environment variables");
+	}
 	if (error == ARGS)
 	{
 		ft_putstr(RED);

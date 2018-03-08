@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/07 15:23:27 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 09:59:43 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <errno.h>
 # include <dirent.h>
 
-enum {ARGS, FOUND, QUOTES};
+enum {ARGS, FOUND, QUOTES, EMPTY};
 
 extern int	g_error;
 
