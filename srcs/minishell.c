@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 10:33:35 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 18:38:11 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	print_prompt(char **cpy)
 
 	tmp = NULL;
 	path = NULL;
-	tmp = get_var(cpy, "PWD=");
+	if (cpy)
+		tmp = get_var(cpy, "PWD=");
 	if (tmp)
 	{
 		path = ft_strrchr(tmp, '/');
@@ -75,6 +76,7 @@ char	*gnl(void)
 }
 
 int		g_error = 0;
+char	**g_cpy;
 
 void	INThandler(int sig)
 {
@@ -83,22 +85,24 @@ void	INThandler(int sig)
 	ft_putstr("\b ");
 	ft_putstr("\b\b ");
 	ft_putstr("\b");
+	ft_putchar('\n');
+	print_prompt(g_cpy);
 }
 
 int		main(void)
 {
 	extern char **environ;
-	char	**cpy;
 	char	*line;
 	char	**args;
 
-	environ_cpy(environ, &cpy);
+	environ_cpy(environ, &g_cpy);
 	signal(SIGINT, INThandler);
 	while (1)
 	{
 		args = NULL;
 		line = NULL;
-		print_prompt(cpy);
+		if (!g_error)
+			print_prompt(g_cpy);
 		line = gnl();
 		if (line)
 		{
@@ -109,17 +113,17 @@ int		main(void)
 			else if (ft_strcmp(line, "exit") == 0 || ft_strcmp(line, "q") == 0)
 				break ;
 			else if (ft_strncmp(line, "echo", 4) == 0)
-				ft_echo(args, cpy);
+				ft_echo(args, g_cpy);
 			else if (ft_strncmp(line, "cd", 2) == 0)
-				ft_cd(&cpy, args);
+				ft_cd(&g_cpy, args);
 			else if (ft_strncmp(line, "setenv", 6) == 0)
-				ft_setenv(&cpy, args);
+				ft_setenv(&g_cpy, args);
 			else if (ft_strncmp(line, "unsetenv", 8) == 0)
-				ft_unsetenv(&cpy, args);
+				ft_unsetenv(&g_cpy, args);
 			else if (ft_strcmp(line, "env") == 0)
-				ft_env(cpy);
+				ft_env(g_cpy);
 			else
-				ft_execve(args, cpy);
+				ft_execve(args, g_cpy);
 			free(line);
 		}
 		if (args)
@@ -128,8 +132,8 @@ int		main(void)
 			free(args);
 		}
 	}
-	ft_tabdel(&cpy);
-	free(cpy);
+	ft_tabdel(&g_cpy);
+	free(g_cpy);
 	free(line);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 10:25:56 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 18:37:39 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,17 @@ char	*make_string(char *fullpath)
 
 int		do_execve(char **arg, char **env)
 {
-	pid_t pid = new_process();
+	pid_t	pid;
 	char	*cmd;
 	char	*path;
 	int		status;
 
-	path = get_var(env, "PATH=");
-	path = ft_strjoin(path, "/");
+	path = ft_strjoin(path = get_var(env, "PATH="), "/");
 	if (arg[0][0] != '/')
 		cmd = ft_strjoin(path, arg[0]);
 	else
 		cmd = ft_strdup(arg[0]);
-	if (pid == -1)
+	if ((pid = new_process()) == -1)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 	{
@@ -76,46 +75,63 @@ char	**tab_conv(char **args, char **env)
 	return (args);
 }
 
+static int		error_exec(char ***arg, char **env, char **fullpath, char **BU)
+{
+	if (tab_size(*arg) == 0)
+		return (1);
+	*arg = tab_conv(*arg, env);
+	if (!get_var(env, "PATH="))
+	{
+		ft_print_error(*arg[0], VAR_FOUND, "$PATH");
+		return (1);
+	}
+	*fullpath = ft_strdup(get_var(env, "PATH="));
+	*BU = ft_strdup(*fullpath);
+	return (0);
+}
+
+static void		make_fullpath(char **fullpath, char **old)
+{
+	*old = ft_strdup(*fullpath);
+	free(*fullpath);
+	*fullpath = ft_strdup(ft_strchr(*old, ':'));
+	free(*old);
+	free(*fullpath);
+	*fullpath = ft_strdup(*fullpath + 1);
+}
+
+static void		end_execve(char *path, char **arg, char ***env, char **BU)
+{
+	if (!path && g_error == 0)
+		ft_print_error(arg[0], FT_FOUND, "");
+	set_var(env, "PATH=", *BU);
+	free(*BU);
+}
+
 void	ft_execve(char **arg, char **env)
 {
-	char *fullpath;
-	char *path;
-	char *BU;
-	char *old;
-	int ret;
+	char	*fullpath;
+	char	*path;
+	char	*BU;
+	char	*old;
+	int		ret;
 
-	if (tab_size(arg) == 0)
-		return ;
-	arg = tab_conv(arg, env);
-	if (arg[0][0] == '/')
+	if (arg[0] && arg[0][0] == '/')
 	{
 		if (((ret = do_execve(arg, env))) && ret != 256 && g_error == 0)
 			ft_print_error(arg[0], FT_FOUND, NULL);
 		return ;
 	}
-	else if (!get_var(env, "PATH="))
-	{
-		ft_print_error(arg[0], VAR_FOUND, "$PATH");
+	if (error_exec(&arg, env, &fullpath, &BU))
 		return ;
-	}
-	fullpath = ft_strdup(get_var(env, "PATH="));
-	BU = ft_strdup(fullpath);
 	while ((path = make_string(fullpath)))
 	{
 		set_var(&env, "PATH=", path);
 		free(path);
 		if ((!(ret = do_execve(arg, env))) || ret == 256)
 			break ;
-		old = ft_strdup(fullpath);
-		free(fullpath);
-		fullpath = ft_strdup(ft_strchr(old, ':'));
-		free(old);
-		free(fullpath);
-		fullpath = ft_strdup(fullpath + 1);
+		make_fullpath(&fullpath, &old);
 	}
 	free(fullpath);
-	if (!path && g_error == 0)
-		ft_print_error(arg[0], FT_FOUND, "");
-	set_var(&env, "PATH=", BU);
-	free(BU);
+	end_execve(path, arg, &env, &BU);
 }
