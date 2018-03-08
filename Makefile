@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/03/04 16:05:10 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/03/08 10:34:49 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRCS = minishell.c \
 		ft_unsetenv.c \
 		ft_execve.c \
 		del_tools.c \
-		global_tools.c
+		global_tools.c \
+		get_args.c
 
 SOURCES = $(addprefix $(SRCDIR)/, $(SRCS))
 INCLUDES = $(addprefix -I, $(INCDIR))
@@ -43,7 +44,8 @@ vpath %.c srcs \
 	srcs/builtins/ft_setenv \
 	srcs/builtins/ft_unsetenv \
 	srcs/builtins/ft_env \
-	srcs/tools
+	srcs/tools \
+	srcs/args
 
 GREEN = '\033[4;32m'
 RED = '\033[4;31m'

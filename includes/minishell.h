@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 09:59:43 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 10:34:09 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@
 # include <errno.h>
 # include <dirent.h>
 
-enum {ARGS, FOUND, QUOTES, EMPTY};
+enum {ARGS, VAR_FOUND, FT_FOUND, QUOTES, EMPTY};
 
 extern int	g_error;
 
 pid_t	new_process(void);
 void	ft_tabdel(char ***tab);
-void	print_error(char *args, int error);
 char	*get_var(char **environ, char *var);
 void	set_var(char ***environ, char *var, char *value);
 void	ft_cd(char ***environ, char **arg);
@@ -50,5 +49,6 @@ void	ft_echo(char **tabs, char **cpy);
 int		tab_size(char **tab);
 void	ft_print_error(char *ft, int error, char *arg);
 char	*var_conv(char *arg, char **env);
+char	**get_a(char *line);
 
 #endif

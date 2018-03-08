@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:20:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 10:03:10 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 10:27:58 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,22 @@ void	ft_print_error(char *ft, int error, char *arg)
 		ft_putstr(": ");
 		ft_putendl("no more environment variables");
 	}
+	if (error == QUOTES)
+	{
+		ft_putstr(RED);
+		ft_putstr(arg);
+		ft_putstr(BLANK);
+		ft_putstr(": ");
+		ft_putendl("quote error");
+	}
+	if (error == FT_FOUND)
+	{
+		ft_putstr(RED);
+		ft_putstr(ft);
+		ft_putstr(BLANK);
+		ft_putstr(": ");
+		ft_putendl("command not found");
+	}
 	if (error == ARGS)
 	{
 		ft_putstr(RED);
@@ -48,7 +64,7 @@ void	ft_print_error(char *ft, int error, char *arg)
 		ft_putstr(": ");
 		ft_putendl("arguments problem");
 	}
-	if (error == FOUND)
+	if (error == VAR_FOUND)
 	{
 		ft_putstr(RED);
 		ft_putstr(ft);
@@ -73,9 +89,6 @@ char	*get_var(char **environ, char *var)
 		tmp = ft_strchr(env, '=');
 		*(tmp + 1) = '\0';
 		free(env);
-//		printf("env: %s\n", env);
-//		printf("var: %s\n", var);
-//		printf("result: %s\n", *(environ + i) + ft_strlen(var));
 		if (!(ft_strcmp(env, var)))
 			return (*(environ + i) + ft_strlen(var));
 		i++;

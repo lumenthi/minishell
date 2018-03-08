@@ -6,33 +6,13 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/07 15:35:09 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 10:33:35 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdio.h>
 #include <fcntl.h>
-
-void	print_error(char *args, int error)
-{
-	if (error == FOUND)
-	{
-		ft_putstr(RED);
-		ft_putstr(args);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putendl("command not found");
-	}
-	else if (error == QUOTES)
-	{
-		ft_putstr(RED);
-		ft_putstr(args);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putendl("quote error");
-	}
-}
 
 void	environ_cpy(char **environ, char ***cpy)
 {
@@ -94,116 +74,6 @@ char	*gnl(void)
 	return (line);
 }
 
-int		quote_invalid(char *line)
-{
-	int c;
-	int i;
-
-	c = 0;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '"')
-			c++;
-		i++;
-	}
-	return (c % 2 ? 1 : 0);
-}
-
-void	print_tab(char **args)
-{
-	int i = 0;
-	ft_putendl("___________");
-	while (args[i] != NULL)
-	{
-		printf("args[%d]: '%s'\n", i, args[i]);
-		i++;
-	}
-	ft_putendl("___________");
-}
-
-char	**get_a(char *line)
-{
-	char	**args;
-	int		i;
-	int		j;
-	int		w;
-	int		c = 0;
-	int		lim = ft_strlen(line);
-
-	if (line && quote_invalid(line))
-		return (NULL);
-//	ft_putnbr(quote_invalid(line));
-	i = 0;
-	j = 0;
-	w = 0;
-	args = NULL;
-	args = malloc(0);
-	while (c < lim)
-	{
-		if (line[c] == '"')
-		{
-			c++;
-			if (line[c] == '"')
-			{
-				args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
-				args[i] = ft_strdup("");
-				w = 1;
-			}
-			else
-			{
-				while (c < lim && line[c] != '"')
-				{
-					if (w == 0)
-					{
-						args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
-						args[i] = malloc(lim);
-	//					printf("create args[%d]\n", i);
-					}
-					args[i][j] = line[c];
-	//				printf("create args[%d][%d]: %c\n", i, j, args[i][j]);
-					j++;
-					w = 1;
-					c++;
-	//				ft_putnbr(c);
-				}
-			}
-		}
-		else
-		{
-			while (c < lim && !ft_is_space(line[c]))
-			{
-				if (w == 0)
-				{
-					args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
-					args[i] = malloc(lim);
-//					printf("create args[%d]\n", i);
-				}
-//				args[i] = (char *)ft_realloc(args[i], sizeof(char) * (j + 1));
-				args[i][j] = line[c];
-//				printf("create args[%d][%d]: %c\n", i, j, args[i][j]);
-				j++;
-				w = 1;
-				c++;
-//				ft_putnbr(c);
-			}
-		}
-		if (w != 0)
-		{
-			args[i][j] = '\0';
-			i++;
-		}
-//		ft_putendl(args[i]);
-//		w ? i++ : 1;
-		j = 0;
-		w = 0;
-		c++;
-	}
-	args = (char **)ft_realloc(args, sizeof(char *) * (i + 1));
-	args[i] = NULL;
-	return (args);
-}
-
 int		g_error = 0;
 
 void	INThandler(int sig)
@@ -224,7 +94,6 @@ int		main(void)
 
 	environ_cpy(environ, &cpy);
 	signal(SIGINT, INThandler);
-	g_error = 0;
 	while (1)
 	{
 		args = NULL;
@@ -233,10 +102,10 @@ int		main(void)
 		line = gnl();
 		if (line)
 		{
+			g_error = 0;
 			args = get_a(line);
-//			print_tab(args);
 			if (!args)
-				print_error(line, QUOTES);
+				ft_print_error(NULL, QUOTES, line);
 			else if (ft_strcmp(line, "exit") == 0 || ft_strcmp(line, "q") == 0)
 				break ;
 			else if (ft_strncmp(line, "echo", 4) == 0)
