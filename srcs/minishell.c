@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/09 12:30:02 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/09 14:30:16 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,20 +87,59 @@ void	INThandler(int sig)
 	ft_putstr("\b");
 	ft_putchar('\n');
 	print_prompt(g_cpy);
-//	g_error = 0;
+}
+
+static void	ft_apply(char **line, char **args)
+{
+	if (ft_strncmp(*line, "echo", 4) == 0)
+		ft_echo(args, g_cpy);
+	else if (ft_strncmp(*line, "cd", 2) == 0)
+		ft_cd(&g_cpy, args);
+	else if (ft_strncmp(*line, "setenv", 6) == 0)
+		ft_setenv(&g_cpy, args);
+	else if (ft_strncmp(*line, "unsetenv", 8) == 0)
+		ft_unsetenv(&g_cpy, args);
+	else if (ft_strcmp(*line, "env") == 0)
+		ft_env(g_cpy);
+	else
+		ft_execve(args, g_cpy);
+}
+
+static int		ft_minishell(char **line)
+{
+	char **args;
+
+	args = NULL;
+	args = get_a(*line, args);
+	if (!args)
+		ft_print_error(NULL, QUOTES, *line);
+	else if (args[0] &&
+		(ft_strcmp(args[0], "exit") == 0 || ft_strcmp(args[0], "q") == 0))
+		{
+			ft_tabdel(&args);
+			free(args);
+			return (1);
+		}
+	else
+		ft_apply(line, args);
+	free(*line);
+	if (args)
+	{
+		ft_tabdel(&args);
+		free(args);
+	}
+	return (0);
 }
 
 int		main(void)
 {
 	extern char **environ;
 	char	*line;
-	char	**args;
 
 	environ_cpy(environ, &g_cpy);
 	signal(SIGINT, INThandler);
 	while (1)
 	{
-		args = NULL;
 		line = NULL;
 		if (!g_error)
 			print_prompt(g_cpy);
@@ -108,30 +147,8 @@ int		main(void)
 		g_error = 0;
 		if (line)
 		{
-			args = get_a(line, args);
-			if (!args)
-				ft_print_error(NULL, QUOTES, line);
-			else if (args[0] &&
-				(ft_strcmp(args[0], "exit") == 0 || ft_strcmp(args[0], "q") == 0))
+			if (ft_minishell(&line))
 				break ;
-			else if (ft_strncmp(line, "echo", 4) == 0)
-				ft_echo(args, g_cpy);
-			else if (ft_strncmp(line, "cd", 2) == 0)
-				ft_cd(&g_cpy, args);
-			else if (ft_strncmp(line, "setenv", 6) == 0)
-				ft_setenv(&g_cpy, args);
-			else if (ft_strncmp(line, "unsetenv", 8) == 0)
-				ft_unsetenv(&g_cpy, args);
-			else if (ft_strcmp(line, "env") == 0)
-				ft_env(g_cpy);
-			else
-				ft_execve(args, g_cpy);
-			free(line);
-		}
-		if (args)
-		{
-			ft_tabdel(&args);
-			free(args);
 		}
 	}
 	ft_tabdel(&g_cpy);
