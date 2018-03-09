@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 10:20:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 10:27:58 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/09 16:02:26 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,64 @@ int		tab_size(char **tab)
 	return (i);
 }
 
+void	print_empty(char *ft)
+{
+	ft_putstr(RED);
+	ft_putstr(ft);
+	ft_putstr(BLANK);
+	ft_putstr(": ");
+	ft_putendl("no environment variables");
+}
+
+void	print_quotes(char *arg)
+{
+	ft_putstr(RED);
+	ft_putstr(arg);
+	ft_putstr(BLANK);
+	ft_putstr(": ");
+	ft_putendl("quote error");
+}
+
+void	print_ft_found(char *ft)
+{
+	ft_putstr(RED);
+	ft_putstr(ft);
+	ft_putstr(BLANK);
+	ft_putstr(": ");
+	ft_putendl("command not found");
+}
+
+void	print_args(char *ft)
+{
+	ft_putstr(RED);
+	ft_putstr(ft);
+	ft_putstr(BLANK);
+	ft_putstr(": ");
+	ft_putendl("arguments problem");
+}
+
+void	print_var_found(char *ft, char *arg)
+{
+	ft_putstr(RED);
+	ft_putstr(ft);
+	ft_putstr(BLANK);
+	ft_putstr(": ");
+	ft_putstr(arg);
+	ft_putendl(" no such a variable");
+}
+
 void	ft_print_error(char *ft, int error, char *arg)
 {
 	if (error == EMPTY)
-	{
-		ft_putstr(RED);
-		ft_putstr(ft);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putendl("no more environment variables");
-	}
+		print_empty(ft);
 	if (error == QUOTES)
-	{
-		ft_putstr(RED);
-		ft_putstr(arg);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putendl("quote error");
-	}
+		print_quotes(arg);
 	if (error == FT_FOUND)
-	{
-		ft_putstr(RED);
-		ft_putstr(ft);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putendl("command not found");
-	}
+		print_ft_found(ft);
 	if (error == ARGS)
-	{
-		ft_putstr(RED);
-		ft_putstr(ft);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putendl("arguments problem");
-	}
+		print_args(ft);
 	if (error == VAR_FOUND)
-	{
-		ft_putstr(RED);
-		ft_putstr(ft);
-		ft_putstr(BLANK);
-		ft_putstr(": ");
-		ft_putstr(arg);
-		ft_putendl(" no such a variable");
-	}
+		print_var_found(ft, arg);
 }
 
 char	*get_var(char **environ, char *var)

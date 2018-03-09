@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/03/08 10:34:49 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/03/09 16:05:43 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ $(NAME): $(OBJS) $(LIBFT)
 
 $(OBJDIR)/%.o: %.c
 	@ mkdir -p $(OBJDIR)
-	@ $(CC) -c $(FLAGS) -g $(INCLUDES) -o $@ $<
+	@ $(CC) -c $(FLAGS) $(INCLUDES) -o $@ $<
 
 $(LIBFT): $(LIBFT_OBJ)
 	@ make -sC $(LIBDIR)

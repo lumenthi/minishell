@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 23:36:55 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/09 15:46:50 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,13 @@
 #define RED		"\033[1;31m"
 
 # include "../libft/libft.h"
-# include <stdio.h>
-# include <fcntl.h>
 # include <sys/types.h>
-# include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
-# include <errno.h>
-# include <dirent.h>
 
 enum {ARGS, VAR_FOUND, FT_FOUND, QUOTES, EMPTY};
-
-extern int	g_error;
 
 pid_t	new_process(void);
 void	ft_tabdel(char ***tab);

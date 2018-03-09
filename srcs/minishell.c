@@ -6,13 +6,11 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/09 14:30:16 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/09 15:35:10 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
-#include <fcntl.h>
 
 void	environ_cpy(char **environ, char ***cpy)
 {

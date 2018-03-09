@@ -6,11 +6,13 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 18:37:39 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/09 15:30:15 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+extern int	g_error;
 
 char	*make_string(char *fullpath)
 {
@@ -87,6 +89,8 @@ static int		error_exec(char ***arg, char **env, char **fullpath, char **BU)
 	}
 	*fullpath = ft_strdup(get_var(env, "PATH="));
 	*BU = ft_strdup(*fullpath);
+	free(*fullpath);
+	*fullpath = ft_strjoin(*BU, ":");
 	return (0);
 }
 
