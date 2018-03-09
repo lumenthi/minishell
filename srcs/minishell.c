@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 18:38:11 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/09 12:30:02 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	INThandler(int sig)
 	ft_putstr("\b");
 	ft_putchar('\n');
 	print_prompt(g_cpy);
+//	g_error = 0;
 }
 
 int		main(void)
@@ -104,13 +105,14 @@ int		main(void)
 		if (!g_error)
 			print_prompt(g_cpy);
 		line = gnl();
+		g_error = 0;
 		if (line)
 		{
-			g_error = 0;
-			args = get_a(line);
+			args = get_a(line, args);
 			if (!args)
 				ft_print_error(NULL, QUOTES, line);
-			else if (ft_strcmp(line, "exit") == 0 || ft_strcmp(line, "q") == 0)
+			else if (args[0] &&
+				(ft_strcmp(args[0], "exit") == 0 || ft_strcmp(args[0], "q") == 0))
 				break ;
 			else if (ft_strncmp(line, "echo", 4) == 0)
 				ft_echo(args, g_cpy);

@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 18:38:07 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/08 23:36:55 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ void	ft_echo(char **tabs, char **cpy);
 int		tab_size(char **tab);
 void	ft_print_error(char *ft, int error, char *arg);
 char	*var_conv(char *arg, char **env);
-char	**get_a(char *line);
+char	**get_a(char *line, char **args);
 
 #endif
