@@ -6,13 +6,11 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:12:13 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/13 12:22:48 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/14 15:33:52 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-extern int	g_error;
 
 static int	do_execve(char **arg, char **env)
 {

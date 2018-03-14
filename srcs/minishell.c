@@ -6,14 +6,11 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/13 12:37:30 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/14 15:37:07 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int			g_error = 0;
-char		**g_cpy;
 
 void		inthandler(int sig)
 {
@@ -73,6 +70,7 @@ int			main(void)
 	extern char	**environ;
 	char		*line;
 
+	g_error = 0;
 	environ_cpy(environ, &g_cpy);
 	signal(SIGINT, inthandler);
 	while (1)

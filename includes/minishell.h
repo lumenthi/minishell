@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/13 12:35:36 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/14 15:37:02 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,8 @@ char	**tab_conv(char **args, char **env);
 char	*make_string(char *fullpath);
 void	print_prompt(char **cpy);
 char	*gnl(void);
+
+int		g_error;
+char	**g_cpy;
+
 #endif
