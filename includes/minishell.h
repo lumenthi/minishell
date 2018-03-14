@@ -6,17 +6,17 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/09 15:46:50 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:35:36 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#define GREEN	"\033[1;32m"
-#define BLUE	"\033[4;34m"
-#define BLANK	"\033[0m"
-#define RED		"\033[1;31m"
+# define GREEN "\033[1;32m"
+# define BLUE "\033[4;34m"
+# define BLANK "\033[0m"
+# define RED "\033[1;31m"
 
 # include "../libft/libft.h"
 # include <sys/types.h>
@@ -43,5 +43,18 @@ int		tab_size(char **tab);
 void	ft_print_error(char *ft, int error, char *arg);
 char	*var_conv(char *arg, char **env);
 char	**get_a(char *line, char **args);
-
+void	print_empty(char *ft);
+void	print_quotes(char *arg);
+void	print_ft_found(char *ft);
+void	print_args(char *ft);
+void	print_var_found(char *ft, char *arg);
+int		quote_invalid(char *line);
+void	cd_var(char **arg, char ***environ, char **abs_path);
+void	cd_old(char ***environ, char **ap, char *op);
+void	cd_home(char ***environ, char **abs_path);
+void	cd_path(char **arg, char ***environ, char **abs_path);
+char	**tab_conv(char **args, char **env);
+char	*make_string(char *fullpath);
+void	print_prompt(char **cpy);
+char	*gnl(void);
 #endif

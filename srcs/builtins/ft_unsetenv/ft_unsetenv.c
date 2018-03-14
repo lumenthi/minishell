@@ -6,13 +6,13 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 10:57:23 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/08 12:11:20 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:05:52 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-char	*env_get(char *cpy)
+char		*env_get(char *cpy)
 {
 	char *env;
 	char *tmp;
@@ -23,7 +23,7 @@ char	*env_get(char *cpy)
 	return (env);
 }
 
-static void		ft_recenter(char ***cpy, char **tmp, int i)
+static void	ft_recenter(char ***cpy, char **tmp, int i)
 {
 	free(*(*cpy + i));
 	while (*(*cpy + (i + 1)))
@@ -35,7 +35,7 @@ static void		ft_recenter(char ***cpy, char **tmp, int i)
 	free(*tmp);
 }
 
-static int		first_check(char ***cpy, char **args)
+static int	first_check(char ***cpy, char **args)
 {
 	if (tab_size(args) > 2 || tab_size(args) == 1)
 	{
@@ -53,7 +53,7 @@ static int		first_check(char ***cpy, char **args)
 	return (0);
 }
 
-void	ft_unsetenv(char ***cpy, char **args)
+void		ft_unsetenv(char ***cpy, char **args)
 {
 	int		i;
 	char	*tmp;

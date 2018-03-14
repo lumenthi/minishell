@@ -6,77 +6,16 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/09 15:35:10 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:37:30 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	environ_cpy(char **environ, char ***cpy)
-{
-	int i;
+int			g_error = 0;
+char		**g_cpy;
 
-	i = 0;
-	while (*(environ + i))
-		i++;
-	*cpy = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (*(environ + i))
-	{
-		(*(*cpy + i)) = ft_strdup(*(environ + i));
-		i++;
-	}
-	*(*cpy + i) = NULL;
-}
-
-void	print_prompt(char **cpy)
-{
-	char *path;
-	char *tmp;
-
-	tmp = NULL;
-	path = NULL;
-	if (cpy)
-		tmp = get_var(cpy, "PWD=");
-	if (tmp)
-	{
-		path = ft_strrchr(tmp, '/');
-		ft_strlen(path) > 1 ? path = path + 1 : 0;
-		!path ? path = tmp : 0;
-	}
-	ft_putstr(BLUE);
-	ft_putstr("[42minishell]");
-	ft_putstr(BLANK);
-	ft_putstr(GREEN);
-	path ? ft_putstr(path) : 0;
-	ft_putstr("$ ");
-	ft_putstr(BLANK);
-}
-
-char	*gnl(void)
-{
-	char	*line;
-	char	buf;
-	int		i;
-
-	line = NULL;
-	i = 0;
-	buf = 0;
-	while ((read(0, &buf, 1)) && buf != '\n' && buf != '\0')
-	{
-		line = (char*)ft_realloc(line, i + 2);
-		*(line + i) = buf;
-		i++;
-	}
-	if (i && line)
-		*(line + i) = '\0';
-	return (line);
-}
-
-int		g_error = 0;
-char	**g_cpy;
-
-void	INThandler(int sig)
+void		inthandler(int sig)
 {
 	if (sig == 2)
 		g_error = 1;
@@ -103,7 +42,7 @@ static void	ft_apply(char **line, char **args)
 		ft_execve(args, g_cpy);
 }
 
-static int		ft_minishell(char **line)
+static int	ft_minishell(char **line)
 {
 	char **args;
 
@@ -113,11 +52,11 @@ static int		ft_minishell(char **line)
 		ft_print_error(NULL, QUOTES, *line);
 	else if (args[0] &&
 		(ft_strcmp(args[0], "exit") == 0 || ft_strcmp(args[0], "q") == 0))
-		{
-			ft_tabdel(&args);
-			free(args);
-			return (1);
-		}
+	{
+		ft_tabdel(&args);
+		free(args);
+		return (1);
+	}
 	else
 		ft_apply(line, args);
 	free(*line);
@@ -129,13 +68,13 @@ static int		ft_minishell(char **line)
 	return (0);
 }
 
-int		main(void)
+int			main(void)
 {
-	extern char **environ;
-	char	*line;
+	extern char	**environ;
+	char		*line;
 
 	environ_cpy(environ, &g_cpy);
-	signal(SIGINT, INThandler);
+	signal(SIGINT, inthandler);
 	while (1)
 	{
 		line = NULL;

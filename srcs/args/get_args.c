@@ -6,36 +6,11 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 10:32:01 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/09 12:08:42 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/13 11:49:11 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int		quote_invalid(char *line)
-{
-	int c;
-	int i;
-
-	c = 0;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '"')
-			c++;
-		i++;
-	}
-	return (c % 2 ? 1 : 0);
-}
-/*
-void	print_tab(char **tab)
-{
-	int i = 0;
-
-	while (tab[i])
-		ft_putendl(tab[i++]);
-}
-*/
 
 static void	make_word(char ***args, int *i, char **str, int j)
 {
@@ -68,7 +43,7 @@ static void	get_normal(int *c, char *line, char **str, int *j)
 static void	get_quotes(int *c, char *line, char **str, int *j)
 {
 	int		lim;
-	
+
 	lim = (int)ft_strlen(line);
 	(*c)++;
 	if (line[*c] == '"')
@@ -79,9 +54,9 @@ static void	get_quotes(int *c, char *line, char **str, int *j)
 		{
 			if (!(*str))
 				*str = malloc(lim);
-		*(*str + *j) = line[*c];
-		(*j)++;
-		(*c)++;
+			*(*str + *j) = line[*c];
+			(*j)++;
+			(*c)++;
 		}
 	}
 }
@@ -107,7 +82,7 @@ static void	get_words(char *line, char ***args, char **str, int *i)
 	}
 }
 
-char	**get_a(char *line, char **args)
+char		**get_a(char *line, char **args)
 {
 	int		i;
 	char	*str;
