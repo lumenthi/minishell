@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/14 15:37:07 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/19 14:47:12 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ void		inthandler(int sig)
 	print_prompt(g_cpy);
 }
 
-static void	ft_apply(char **line, char **args)
+void	ft_apply(char **line, char **args)
 {
-	if (ft_strncmp(*line, "echo", 4) == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		ft_echo(args, g_cpy);
-	else if (ft_strncmp(*line, "cd", 2) == 0)
+	else if (ft_strcmp(args[0], "cd") == 0)
 		ft_cd(&g_cpy, args);
-	else if (ft_strncmp(*line, "setenv", 6) == 0)
+	else if (ft_strcmp(args[0], "setenv") == 0)
 		ft_setenv(&g_cpy, args);
-	else if (ft_strncmp(*line, "unsetenv", 8) == 0)
+	else if (ft_strcmp(args[0], "unsetenv") == 0)
 		ft_unsetenv(&g_cpy, args);
-	else if (ft_strcmp(*line, "env") == 0)
-		ft_env(g_cpy);
+	else if (ft_strcmp(args[0], "env") == 0)
+		ft_env(&g_cpy, args, line);
 	else
 		ft_execve(args, g_cpy);
 }
