@@ -6,13 +6,13 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:24:59 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/19 14:47:12 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/20 13:43:47 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void		inthandler(int sig)
+static void	inthandler(int sig)
 {
 	if (sig == 2)
 		g_error = 1;
@@ -23,23 +23,23 @@ void		inthandler(int sig)
 	print_prompt(g_cpy);
 }
 
-void	ft_apply(char **line, char **args)
+static void	ft_apply(char **line, char **args)
 {
-	if (ft_strcmp(args[0], "echo") == 0)
+	if (args[0] && ft_strcmp(args[0], "echo") == 0)
 		ft_echo(args, g_cpy);
-	else if (ft_strcmp(args[0], "cd") == 0)
+	else if (args[0] && ft_strcmp(args[0], "cd") == 0)
 		ft_cd(&g_cpy, args);
-	else if (ft_strcmp(args[0], "setenv") == 0)
+	else if (args[0] && ft_strcmp(args[0], "setenv") == 0)
 		ft_setenv(&g_cpy, args);
-	else if (ft_strcmp(args[0], "unsetenv") == 0)
+	else if (args[0] && ft_strcmp(args[0], "unsetenv") == 0)
 		ft_unsetenv(&g_cpy, args);
-	else if (ft_strcmp(args[0], "env") == 0)
+	else if (args[0] && ft_strcmp(args[0], "env") == 0)
 		ft_env(&g_cpy, args, line);
 	else
 		ft_execve(args, g_cpy);
 }
 
-static int	ft_minishell(char **line)
+int			ft_minishell(char **line)
 {
 	char **args;
 

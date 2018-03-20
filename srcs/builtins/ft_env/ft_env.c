@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 14:08:43 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/19 12:38:42 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/20 13:55:37 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,71 +30,74 @@ static int		set_env(char ***environ, char *env)
 	return (1);
 }
 
-void	ft_env(char ***environ, char **args, char **line)
+static void		print_environ(char ***environ)
 {
-	int		i;
+	int i;
+
+	i = 0;
+	while (*(*environ + i))
+	{
+		ft_putendl(*(*environ + i));
+		i++;
+	}
+	if (i == 0)
+		ft_print_error("env", EMPTY, NULL);
+}
+
+static void		make_fake(char ***fake_env, char **args, int *j, char **line)
+{
+	while (args[*j])
+	{
+		if (ft_strchr(args[*j], '='))
+		{
+			if (!set_env(fake_env, args[*j]))
+			{
+				ft_print_error("env", ARGS, NULL);
+				return ;
+			}
+		}
+		else
+			break ;
+		*line = *line + ft_strlen(args[*j]) + 1;
+		(*j)++;
+	}
+}
+
+static void		reset_env(char ***environ, char ***bu, char ***fake_env)
+{
+	ft_tabdel(environ);
+	free(*environ);
+	environ_cpy(*bu, environ);
+	ft_tabdel(fake_env);
+	free(*fake_env);
+	ft_tabdel(bu);
+	free(*bu);
+}
+
+void			ft_env(char ***environ, char **args, char **line)
+{
 	int		j;
 	char	**fake_env;
 	char	**bu;
 	char	*line_cpy;
-	
+
 	environ_cpy(*environ, &fake_env);
 	environ_cpy(*environ, &bu);
-	i = 0;
 	j = 1;
-	if (tab_size(args) == 1)
-	{
-		while (*(*environ + i))
-		{
-			ft_putendl(*(*environ + i));
-			i++;
-		}
-		if (i == 0)
-			ft_print_error("env", EMPTY, NULL);
-	}
+	line_cpy = *line + 3;
+	make_fake(&fake_env, args, &j, &line_cpy);
+	fake_cpy(environ, fake_env);
+	if (j == tab_size(args))
+		print_environ(environ);
 	else
 	{
-		line_cpy = *line + 4;
-		while (args[j])
+		if (ft_strcmp(args[1], "exit") != 0 && ft_strcmp(args[1], "q") != 0)
 		{
-			if (ft_strchr(args[j], '='))
-			{
-				if (!set_env(&fake_env, args[j]))
-				{
-					ft_print_error("env", ARGS, NULL);
-					return ;
-				}
-			}
-			else
-				break ;
-			line_cpy = line_cpy + ft_strlen(args[j]) + 1;
-			j++;
-		}
-		i = 0;
-		ft_tabdel(environ);
-		free(*environ);
-		environ_cpy(fake_env, environ);
-		if (j == tab_size(args))
-		{
-			while (*(*environ + i))
-			{
-				ft_putendl(*(*environ + i));
-				i++;
-			}
-			if (i == 0)
-				ft_print_error("env", EMPTY, NULL);
+			line_cpy = ft_strdup(line_cpy);
+			ft_minishell(&line_cpy);
 		}
 		else
-		{
-			args = args + j;
-			ft_apply(&line_cpy, args);
-		}
-		ft_tabdel(environ);
-		free(*environ);
-		environ_cpy(bu, environ);
+			env_error();
 	}
-	ft_tabdel(&fake_env);
-	free(fake_env);
-	ft_tabdel(&bu);
-	free(bu);
+	reset_env(environ, &bu, &fake_env);
 }

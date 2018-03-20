@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 11:22:09 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/03/19 11:44:37 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/03/20 13:54:02 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ char	**tab_conv(char **args, char **env);
 char	*make_string(char *fullpath);
 void	print_prompt(char **cpy);
 char	*gnl(void);
-void	ft_apply(char **line, char **args);
+int		ft_minishell(char **line);
+void	env_error(void);
+void	fake_cpy(char ***environ, char **fake_env);
 
 int		g_error;
 char	**g_cpy;

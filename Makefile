@@ -6,7 +6,7 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/03/13 12:19:31 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/03/20 13:47:32 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = minishell.c \
 		ft_echo.c \
 		ft_cd.c \
 		ft_env.c \
+		ft_env2.c \
 		ft_setenv.c \
 		ft_unsetenv.c \
 		ft_execve.c \
